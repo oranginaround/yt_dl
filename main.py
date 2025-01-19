@@ -8,7 +8,7 @@ from telegram.ext import Application, MessageHandler, filters, ContextTypes
 
 load_dotenv()
 
-TRANSFER_SH_URL = os.getenv("TRANSFER_SH_URL")
+TRANSFER_SH_URL = os.getenv("TRANSFER_SH_URL", "https://localhost:8080")
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN")
 TRANSFERSH_PUBLIC_LINK = os.getenv("TRANSFERSH_PUBLIC_LINK")
 
@@ -27,7 +27,7 @@ def download_video(url: str, output_path: str) -> str:
 def upload_to_transfer(file_path: str) -> str:
     file_name = file_path.split('/')[-1]
     with open(file_path, "rb") as file:
-        response = requests.post(TRANSFER_SH_URL, files={file_name: file})
+        response = requests.post(TRANSFER_SH_URL, files={file_name: file}, headers={"Max-Days": "1"})
     if response.ok:
         response_text = response.text.strip()
         # Extract only the relevant part
