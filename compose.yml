@@ -1,0 +1,29 @@
+services:
+  telegram_bot:
+    build: .
+    container_name: telegram_download_bot
+    environment:
+      TELEGRAM_TOKEN: ${TELEGRAM_TOKEN}
+      TRANSFER_SH_URL: ${TRANSFER_SH_URL}
+    volumes:
+      - ./main.py:/app/main.py
+      - ./downloads:/app/downloads
+    env_file:
+      - .env
+    depends_on:
+      - transfersh
+    restart: always
+
+  transfersh:
+    image: dutchcoders/transfer.sh:latest
+    container_name: transfersh
+    environment:
+      PORT: 8080
+      PROVIDER: local
+      BASEDIR: /data
+
+    ports:
+      - "52000:8080"
+    volumes:
+      - ./transfersh_data:/data
+    restart: always
