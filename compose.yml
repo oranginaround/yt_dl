@@ -3,8 +3,7 @@ services:
     build: .
     container_name: telegram_download_bot
     environment:
-      TELEGRAM_TOKEN: ${TELEGRAM_TOKEN}
-      TRANSFER_SH_URL: ${TRANSFER_SH_URL}
+      TRANSFER_SH_URL: http://transfersh:8080
     volumes:
       - ./main.py:/app/main.py
       - ./downloads:/app/downloads
